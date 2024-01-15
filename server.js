@@ -6,32 +6,39 @@
 // — Также реализуйте обработку несуществующих роутов (404).
 
 const http = require('http');
+let countHome = 0;
+let countAbout = 0;
+let count404 = 0;
 
 const server = http.createServer((req, res) => {
     console.log('Запрос получен');
 
     // Для корневой страницы
     if (req.url === '/') {
-        let count = 1;
+        ++countHome;
         
         res.writeHead(200, {
             'Content-Type': 'text/html; charset=UTF-8',
         });
-        res.end('<h1>Добро пожаловать на мой сайт!</h1><a href="/about">About</a>');
+        res.end(
+            `<h1>Корневая страница</h1><br><p>Количество посещений: ${countHome}</p><br><a href="http://127.0.0.1:3000/about">About</a>`
+            );
 
     } else if (req.url === '/about') {
         // для страницы About
+        ++countAbout;
         res.writeHead(200, {
             'Content-Type': 'text/html; charset=UTF-8',
         });
-        res.end('<h1>About</h1><a href="/">Home</a>');
+        res.end(`<h1>About</h1><br><p>Количество посещений: ${countAbout}</p><br><a href="http://127.0.0.1:3000/">Home</a>`);
 
     } else {
         // для страницы 404
+        ++count404;
         res.writeHead(404, {
             'Content-Type': 'text/html; charset=UTF-8',
         });
-        res.end('<h1>Страница не найдена</h1><a href="/">Home</a><br><a href="/about">About</a>');
+        res.end(`<h1>Страница не найдена</h1><br><p>Количество посещений: ${count404}</p><br><a href="http://127.0.0.1:3000/">Home</a><br><a href="http://127.0.0.1:3000/about">About</a>`);
     }
 });
 
